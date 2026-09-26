@@ -12,5 +12,5 @@ self.__uv$config = {
   client: base + "uv/uv.client.js",
   bundle: base + "uv/uv.bundle.js",
   config: base + "uv/uv.config.js",
-  sw: base + "uv/uv.sw.js",
+  sw: base + "service/sw.js",
 };
