@@ -25,12 +25,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
-      - name: Install Ultraviolet
-        run: npm install --no-save @titaniumnetwork-dev/ultraviolet@3.2.10
+      - name: Install dependencies
+        run: npm install
 
-      - name: Build Ultraviolet assets
-        run: node scripts/build-uv.mjs
+      - name: Build Scramjet assets
+        run: npm run build:proxy
+
+      - name: Build real Alpine filesystem
+        run: npm run build:alpine
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
