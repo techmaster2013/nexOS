@@ -2,12 +2,12 @@ const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const winRoot=$("#windows"),iconRoot=$("#icons"),appRoot=$("#apps"),dockRoot=$("#dock"),launcherEl=$("#launcher"),searchEl=$("#search"),clockEl=$("#clock");
 const power=$("#power"),setup=$("#setup"),boot=$("#boot"),desktop=$("#desktop"),lock=$("#lock"),powerBtn=$("#powerBtn"),setupContinue=$("#setupContinue"),chime=$("#bootChime");
 const A={
-about:{n:"About nexOS",i:"◈",w:480,h:320,v:'<div class="welcome"><h1>nexOS</h1><p class="muted">KDE Plasma × macOS-inspired web desktop.</p><p>Glass panels, a dock, real apps and a simulated terminal.</p><p class="muted">nexOS 0.3 • browser edition</p></div>'},
+about:{n:"About nexOS",i:"◈",w:480,h:320,v:'<div class="welcome"><h1>nexOS</h1><p class="muted">KDE Plasma × macOS-inspired web desktop • Scramjet + WebAssembly</p><p>Glass panels, a dock, real apps and a real Alpine Linux VM.</p><p class="muted">nexOS 0.3 • browser edition</p></div>'},
 files:{n:"nexView",i:"▣",w:620,h:460,v:'<div class="view-open"><h2>nexView</h2><p class="muted">Open pictures, video and audio from your device.</p><input id="viewFile" type="file" accept="image/*,video/*,audio/*"><div id="viewPreview" class="view-preview">choose a file</div></div>',o:initView},
-browser:{n:"nexite",i:"◎",w:760,h:500,v:'<div class="browser"><div class="browserbar"><button id="back">‹</button><button id="forward">›</button><input id="url" value="https://example.com" placeholder="Search or enter address"><button id="go">Open</button></div><div class="browserinfo"><strong>nexOS Browser</strong><span id="uvStatus">nexite • starting transport…</span></div><div class="browserview"><div class="browser-home"><div class="browser-mark">◎</div><h2>Browse the web</h2><p>Ultraviolet proxy engine + transport.</p><button id="browserOpen">Open proxied page ↗</button></div><iframe id="uvFrame" title="nexOS proxied browser" referrerpolicy="no-referrer"></iframe></div></div>',o:initBrowser},
+browser:{n:"nexite",i:"◎",w:760,h:500,v:'<div class="browser"><div class="browserbar"><button id="back">‹</button><button id="forward">›</button><input id="url" value="https://example.com" placeholder="Search or enter address"><button id="go">Open</button></div><div class="browserinfo"><strong>nexOS Browser</strong><span id="uvStatus">nexite • starting transport…</span></div><div class="browserview"><div class="browser-home"><div class="browser-mark">◎</div><h2>Browse the web</h2><p>Scramjet proxy engine + transport.</p><button id="browserOpen">Open proxied page ↗</button></div><iframe id="uvFrame" title="nexOS proxied browser" referrerpolicy="no-referrer"></iframe></div></div>',o:initBrowser},
 notes:{n:"nexJot",i:"▤",w:560,h:440,v:'<div class="jot"><div class="jot-toolbar"><button id="jotSave">Save</button><span id="jotStatus"></span></div><textarea id="notes" placeholder="Start typing…"></textarea></div>',o:initJot},
 preferences:{n:"Preferences",i:"⚙",w:760,h:540,v:'<div class="settings-shell"><aside class="settings-nav"><button data-page="appearance" class="active">🎨 <span>Appearance</span></button><button data-page="wallpaper">🖼 <span>Wallpaper</span></button><button data-page="desktopPage">🖥 <span>Desktop</span></button><button data-page="dockPage">▰ <span>Dock</span></button><button data-page="accessPage">♿ <span>Accessibility</span></button><button data-page="aboutPage">ⓘ <span>About</span></button></aside><div class="settings-content"><div id="appearance" class="settings-page"><h1>Appearance</h1><p>Customize nexOS.</p><section><label>Color scheme <select id="settingTheme"><option value="dark">Dark</option><option value="light">Light</option></select></label><label>Accent color <select id="settingAccent"><option value="blue">Blue</option><option value="violet">Violet</option><option value="pink">Pink</option></select></label></section></div><div id="wallpaper" class="settings-page hidden"><h1>Wallpaper</h1><p>Choose a background.</p><div class="wall-grid"><button data-setting="default" class="wall-card wall-default">Default</button><button data-setting="midnight" class="wall-card wall-midnight">Midnight</button><button data-setting="sunset" class="wall-card wall-sunset">Sunset</button><button data-setting="aurora" class="wall-card wall-aurora">Aurora</button><button data-setting="ocean" class="wall-card wall-ocean">Ocean</button><button data-setting="rose" class="wall-card wall-rose">Rose</button><button data-setting="forest" class="wall-card wall-forest">Forest</button><button data-setting="mono" class="wall-card wall-mono">Mono</button></div></div><div id="desktopPage" class="settings-page hidden"><h1>Desktop</h1><section><label>Icon size <input id="settingIconSize" type="range" min="60" max="110" value="75"></label><button id="resetIcons">Reset icon positions</button></section><section><label class="check"><input id="settingClock24" type="checkbox"> 24-hour clock</label></section></div><div id="dockPage" class="settings-page hidden"><h1>Dock</h1><section><label>Dock icon size <input id="dockSize" type="range" min="40" max="64" value="48"></label><label class="check"><input id="showDock" type="checkbox" checked> Show dock</label></section></div><div id="accessPage" class="settings-page hidden"><h1>Accessibility</h1><section><label class="check"><input id="reduceMotion" type="checkbox"> Reduce motion</label><label class="check"><input id="largeText" type="checkbox"> Larger text</label><label class="check"><input id="contrast" type="checkbox"> High contrast</label></section></div><div id="aboutPage" class="settings-page hidden"><h1>About nexOS</h1><p>nexOS 0.3 • browser edition</p></div></div></div>',o:initPreferences},
-terminal:{n:"nexTerm",i:"⌘",w:650,h:430,v:'<div class="term"><div id="termOutput" class="term-output">nexOS shell • simulated Alpine environment<br>Type <b>help</b>.</div><div class="term-input"><span>nex@alpine:~$</span><input id="cmd" autocomplete="off"></div></div>',o:initTerminal},
+terminal:{n:"nexTerm",i:"⌘",w:760,h:500,v:'<div class="term"><div class="alpine-toolbar"><span><b>nexTerm</b> • real Alpine Linux</span><span id="alpineStatus">waiting to boot…</span><button id="alpineBoot">Boot</button><button id="alpineRestart">Restart</button><button id="alpineSave">Save VM</button><button id="alpineRestore">Restore VM</button><input id="alpineRestoreFile" type="file" accept=".bin,.zst" hidden></div><div id="alpineScreen" class="alpine-screen"><div class="alpine-placeholder">real Alpine Linux • WebAssembly x86 VM<br><small>booting only happens when you press Boot</small></div></div></div>',o:initTerminal},
 store:{n:"nexStore",i:"🛍",w:680,h:480,v:'<div><h1>nexStore</h1><p class="muted">Apps made for nexOS.</p><div class="store-grid"><div class="store-card"><b>nexPaint</b><br><small>Simple drawing pad.</small><br><button data-install="nexPaint">Install</button></div><div class="store-card"><b>nexMusic</b><br><small>Local audio player.</small><br><button data-install="nexMusic">Install</button></div><div class="store-card"><b>nexGames</b><br><small>Mini games collection.</small><br><button data-install="nexGames">Install</button></div><div class="store-card"><b>nexWeather</b><br><small>Weather dashboard shell.</small><br><button data-install="nexWeather">Install</button></div></div></div>',o:initStore},
 games:{n:"nexGames",i:"🎮",w:560,h:430,v:'<div><h1>nexGames</h1><p class="muted">tiny games that run locally.</p><div class="game-grid"><div class="game-card"><b>Clicker</b><br><span id="clickScore">0 clicks</span><br><button id="clickGame">Click!</button></div><div class="game-card"><b>Guess</b><br><small>guess a number from 1–10</small><input id="guessInput" type="number" min="1" max="10"><button id="guessGame">Guess</button><span id="guessResult"></span></div></div></div>',o:initGames},
 paint:{n:"nexPaint",i:"🎨",w:560,h:430,v:'<div><h1>nexPaint</h1><canvas id="paintCanvas" width="500" height="320" style="max-width:100%;background:#fff;border-radius:12px"></canvas></div>',o:initPaint}
@@ -27,13 +27,131 @@ $("#launch").onclick=()=>launcherEl.classList.toggle("hidden");$("#brand").oncli
 function updateClock(){clockEl.textContent=new Intl.DateTimeFormat([],{weekday:"short",hour:"numeric",minute:"2-digit"}).format(new Date())}setInterval(updateClock,1000);updateClock();
 function updateLockClock(){const d=new Date();$("#lockTime").textContent=new Intl.DateTimeFormat([],{hour:"numeric",minute:"2-digit"}).format(d);$("#lockDate").textContent=new Intl.DateTimeFormat([],{weekday:"long",month:"long",day:"numeric"}).format(d)}setInterval(updateLockClock,1000);
 function initCalc(){let v="0";$$("[data-k]").forEach(b=>b.onclick=()=>{const k=b.dataset.k;if(k==="C")v="0";else if(k==="="){try{v=String(Function("return "+v)())}catch{v="Error"}}else v=v==="0"&&!"+-*/.".includes(k)?k:v+k;$("#out").textContent=v})}
-function initTerminal(){const input=$("#cmd"),out=$("#termOutput");const fs={};const run=q=>{const p=q.trim().split(/\\s+/),c=p[0],arg=p.slice(1).join(" ");if(!c)return "";if(c==="help")return "help ls pwd whoami date uname neofetch echo clear mkdir touch cat rm apk fastfetch";if(c==="pwd")return "/home/"+(localStorage.nexUser||"nex");if(c==="whoami")return localStorage.nexUser||"nex";if(c==="date")return new Date().toString();if(c==="uname")return "Linux nexOS 6.12.0-alpine x86_64";if(c==="echo")return arg;if(c==="ls")return Object.keys(fs).join("  ")||"Desktop  Documents  Downloads";if(c==="mkdir"){if(arg)fs[arg]="/";return "created "+arg}if(c==="touch"){if(arg)fs[arg]="";return "created "+arg}if(c==="cat")return fs[arg]??"cat: "+arg+": No such file";if(c==="rm"){delete fs[arg];return "removed "+arg}if(c==="apk")return "apk: simulated package manager\n"+(arg||"usage: apk add <package>");if(c==="neofetch")return "nexOS / Alpine simulation\nCPU: WebAssembly\nShell: nexsh\nMemory: browser managed";if(c==="fastfetch")return "nexOS 0.3  •  Alpine-like shell  •  browser";if(c==="clear"){out.innerHTML="";return ""}return "sh: "+c+": not found"};input.focus();input.onkeydown=e=>{if(e.key!=="Enter")return;const q=input.value,x=document.createElement("div");x.innerHTML="<span style='color:#91b9ff'>nex@alpine:~$</span> "+q+"<br>"+run(q).replace(/\\n/g,"<br>");out.appendChild(x);input.value="";out.scrollTop=out.scrollHeight}}
+function initTerminal(){
+  const screen=$("#alpineScreen"),status=$("#alpineStatus"),boot=$("#alpineBoot"),restart=$("#alpineRestart"),save=$("#alpineSave"),restore=$("#alpineRestore"),restoreFile=$("#alpineRestoreFile");
+  let emulator=null,booted=false;
+  const setStatus=t=>{if(status)status.textContent=t};
+  const start=async()=>{
+    if(booted&&emulator)return;
+    if(typeof V86==="undefined"){setStatus("v86 failed to load");return}
+    screen.innerHTML="";
+    try{
+      emulator=new V86({
+        wasm_path:"https://cdn.jsdelivr.net/npm/v86@0.5/build/v86.wasm",
+        memory_size:512*1024*1024,
+        vga_memory_size:8*1024*1024,
+        screen_container:screen,
+        bios:{url:"https://cdn.jsdelivr.net/gh/copy/v86@master/bios/seabios.bin"},
+        vga_bios:{url:"https://cdn.jsdelivr.net/gh/copy/v86@master/bios/vgabios.bin"},
+        filesystem:{baseurl:"./alpine/alpine-rootfs-flat",basefs:"./alpine/alpine-fs.json"},
+        autostart:true,
+        bzimage_initrd_from_filesystem:true,
+        cmdline:"rw root=host9p rootfstype=9p rootflags=trans=virtio,cache=loose modules=virtio_pci tsc=reliable"
+      });
+      booted=true;
+      setStatus("Alpine Linux • booting…");
+      setTimeout(()=>setStatus("Alpine Linux • running"),3500);
+    }catch(e){
+      console.error(e);
+      screen.innerHTML='<div class="alpine-placeholder">Alpine failed to boot.<br><small>'+String(e.message||e)+'</small></div>';
+      setStatus("boot failed");
+    }
+  };
+  boot.onclick=start;
+  restart.onclick=()=>{if(emulator){emulator.stop();emulator.destroy?.();emulator=null;booted=false}start()};
+  save.onclick=async()=>{
+    if(!emulator)return setStatus("boot Alpine first");
+    try{
+      const state=await emulator.save_state();
+      const db=await new Promise((resolve,reject)=>{
+        const r=indexedDB.open("nexOS",1);
+        r.onupgradeneeded=()=>r.result.createObjectStore("vm");
+        r.onsuccess=()=>resolve(r.result);
+        r.onerror=()=>reject(r.error)
+      });
+      await new Promise((resolve,reject)=>{
+        const tx=db.transaction("vm","readwrite");tx.objectStore("vm").put(state,"alpine");
+        tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)
+      });
+      db.close();setStatus("VM saved ✓")
+    }catch(e){console.error(e);setStatus("save failed")}
+  };
+  restore.onclick=()=>restoreFile.click();
+  restoreFile.onchange=async()=>{
+    const f=restoreFile.files?.[0];if(!f)return;
+    try{
+      const state=await f.arrayBuffer();
+      if(!emulator)await start();
+      emulator.stop();await emulator.restore_state(state);emulator.run();booted=true;setStatus("VM restored ✓")
+    }catch(e){console.error(e);setStatus("restore failed")}
+    restoreFile.value="";
+  };
+  const autoRestore=async()=>{
+    try{
+      const db=await new Promise((resolve,reject)=>{
+        const r=indexedDB.open("nexOS",1);r.onupgradeneeded=()=>r.result.createObjectStore("vm");
+        r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)
+      });
+      const state=await new Promise((resolve,reject)=>{
+        const tx=db.transaction("vm","readonly");const r=tx.objectStore("vm").get("alpine");
+        r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)
+      });
+      db.close();
+      if(state){await start();emulator.stop();await emulator.restore_state(state);emulator.run();setStatus("Alpine Linux • restored")}
+    }catch{}
+  };
+  autoRestore();
+}
 function initJot(){const n=$("#notes"),s=$("#jotStatus");n.value=localStorage.nexNotes||"";$("#jotSave").onclick=()=>{localStorage.nexNotes=n.value;s.textContent="Saved ✓";setTimeout(()=>s.textContent="",1200)}}
 function initView(){const input=$("#viewFile"),p=$("#viewPreview");input.onchange=()=>{const f=input.files[0];if(!f)return;const u=URL.createObjectURL(f);p.innerHTML="";if(f.type.startsWith("image/")){const x=document.createElement("img");x.src=u;p.appendChild(x)}else if(f.type.startsWith("video/")){const x=document.createElement("video");x.src=u;x.controls=true;p.appendChild(x)}else if(f.type.startsWith("audio/")){const x=document.createElement("audio");x.src=u;x.controls=true;p.appendChild(x)}else p.textContent="unsupported file"}}
 function initStore(){$("[data-install]").forEach(b=>b.onclick=()=>{b.textContent="Installed ✓";b.disabled=true;localStorage.setItem("nexInstalled_"+b.dataset.install,"1")})}
 function initGames(){let score=0;$("#clickGame").onclick=()=>{$("#clickScore").textContent=++score+" clicks"};const n=Math.floor(Math.random()*10)+1;$("#guessGame").onclick=()=>{$("#guessResult").textContent=Number($("#guessInput").value)===n?" 🎉 correct!":" nope 😭"}}
 function initPaint(){const c=$("#paintCanvas"),x=c.getContext("2d");let down=false;c.onpointerdown=e=>{down=true;x.beginPath();x.moveTo(e.offsetX,e.offsetY)};c.onpointermove=e=>{if(!down)return;x.lineTo(e.offsetX,e.offsetY);x.stroke()};c.onpointerup=()=>down=false}
-function initBrowser(){const input=$("#url"),frame=$("#uvFrame"),status=$("#uvStatus");let ready=false;const makeUrl=()=>{let u=input.value.trim();if(!u)return null;if(!/^https?:\/\//i.test(u))u="https://www.google.com/search?q="+encodeURIComponent(u);input.value=u;return u};const start=async()=>{try{if(!("serviceWorker" in navigator))throw new Error("Service workers are unavailable");if(typeof BareMux==="undefined")throw new Error("BareMux failed to load");const connection=new BareMux.BareMuxConnection("./baremux/worker.js");const wisp="wss://wisp.mercurywork.shop/";try{await connection.setTransport("./epoxy/index.mjs",[{wisp}])}catch(epoxyError){console.warn("Epoxy failed, trying libcurl",epoxyError);await connection.setTransport("./libcurl/index.mjs",[{wisp}])}await navigator.serviceWorker.register("./service/sw.js",{scope:__uv$config.prefix});await navigator.serviceWorker.ready;ready=true;status.textContent="nexite • Ultraviolet transport ready";return true}catch(e){console.error("nexite UV startup failed",e);status.textContent="nexite • UV transport failed";return false}};const open=async()=>{const u=makeUrl();if(!u)return;if(!ready&&!await start())return;frame.src=__uv$config.prefix+__uv$config.encodeUrl(u)};$("#go").onclick=open;$("#browserOpen").onclick=open;input.onkeydown=e=>{if(e.key==="Enter")open()};$("#back").onclick=()=>{try{frame.contentWindow.history.back()}catch{}};$("#forward").onclick=()=>{try{frame.contentWindow.history.forward()}catch{}};start()}
+function initBrowser(){
+  const input=$("#url"),frame=$("#uvFrame"),status=$("#uvStatus");
+  let ready=false,scramjet=null,connection=null,currentFrame=null;
+  const makeUrl=()=>{
+    let u=input.value.trim();if(!u)return null;
+    if(!/^https?:\\/\\//i.test(u))u="https://www.google.com/search?q="+encodeURIComponent(u);
+    input.value=u;return u
+  };
+  const start=async()=>{
+    try{
+      if(!("serviceWorker" in navigator))throw new Error("Service workers are unavailable");
+      if(typeof $scramjetLoadController!=="function")throw new Error("Scramjet failed to load");
+      const {ScramjetController}= $scramjetLoadController();
+      scramjet=new ScramjetController({
+        files:{wasm:"./scram/scramjet.wasm.wasm",all:"./scram/scramjet.all.js",sync:"./scram/scramjet.sync.js"}
+      });
+      scramjet.init();
+      await navigator.serviceWorker.register("./sw.js");
+      connection=new BareMux.BareMuxConnection("./baremux/worker.js");
+      const wisp="wss://wisp.mercurywork.shop/";
+      await connection.setTransport("./libcurl/index.mjs",[{websocket:wisp}]);
+      ready=true;status.textContent="nexite • Scramjet ready"
+    }catch(e){
+      console.error("nexite Scramjet startup failed",e);
+      status.textContent="nexite • Scramjet failed"
+    }
+  };
+  const open=async()=>{
+    const u=makeUrl();if(!u)return;
+    if(!ready)await start();
+    if(!ready)return;
+    try{
+      if(currentFrame)currentFrame.frame.remove();
+      currentFrame=scramjet.createFrame();
+      currentFrame.frame.id="uvFrame";
+      frame.replaceWith(currentFrame.frame);
+      currentFrame.go(u)
+    }catch(e){console.error(e);status.textContent="nexite • navigation failed"}
+  };
+  $("#go").onclick=open;$("#browserOpen").onclick=open;
+  input.onkeydown=e=>{if(e.key==="Enter")open()};
+  $("#back").onclick=()=>{try{currentFrame?.back()}catch{}};
+  $("#forward").onclick=()=>{try{currentFrame?.forward()}catch{}};
+  start()
+}
 const profileChoices=["●","◆","★","✦","☻","◉","✿","☀","☾","♟","🦊","🐱"];$("#profileIcons")?.querySelectorAll("button").forEach(b=>{if(b.dataset.profile===(localStorage.nexProfile||"0"))b.classList.add("active");b.onclick=()=>{$("#profileIcons").querySelectorAll("button").forEach(x=>x.classList.remove("active"));b.classList.add("active");localStorage.nexProfile=b.dataset.profile}});
 function startBoot(){try{if(!document.fullscreenElement&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(()=>{})}catch{}power.classList.add("hidden");lock.classList.add("hidden");desktop.classList.add("hidden");boot.classList.remove("hidden");try{chime.currentTime=0;chime.play().catch(()=>{})}catch{}setTimeout(()=>{boot.classList.add("hidden");if(!localStorage.nexSetupDone){setup.classList.remove("hidden")}else{lock.classList.remove("hidden");$("#lockName").textContent=localStorage.nexDisplay||"nex";$("#lockAvatar").textContent=profileChoices[Number(localStorage.nexProfile||0)]||"●";$("#unlockPass").value="";updateLockClock()}},1600)}
 powerBtn.onclick=startBoot;
