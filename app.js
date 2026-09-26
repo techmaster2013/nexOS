@@ -10,6 +10,8 @@ preferences:{n:"Preferences",i:"⚙",w:760,h:540,v:'<div class="settings-shell">
 terminal:{n:"nexTerm",i:"⌘",w:760,h:500,v:'<div class="term"><div class="alpine-toolbar"><span><b>nexTerm</b> • real Alpine Linux</span><span id="alpineStatus">waiting to boot…</span><button id="alpineBoot">Boot</button><button id="alpineRestart">Restart</button><button id="alpineSave">Save VM</button><button id="alpineRestore">Restore VM</button><input id="alpineRestoreFile" type="file" accept=".bin,.zst" hidden></div><div id="alpineScreen" class="alpine-screen"><div class="alpine-placeholder">real Alpine Linux • WebAssembly x86 VM<br><small>booting only happens when you press Boot</small></div></div></div>',o:initTerminal},
 store:{n:"nexStore",i:"🛍",w:680,h:480,v:'<div><h1>nexStore</h1><p class="muted">Apps made for nexOS.</p><div class="store-grid"><div class="store-card"><b>nexPaint</b><br><small>Simple drawing pad.</small><br><button data-install="nexPaint">Install</button></div><div class="store-card"><b>nexMusic</b><br><small>Local audio player.</small><br><button data-install="nexMusic">Install</button></div><div class="store-card"><b>nexGames</b><br><small>Mini games collection.</small><br><button data-install="nexGames">Install</button></div><div class="store-card"><b>nexWeather</b><br><small>Weather dashboard shell.</small><br><button data-install="nexWeather">Install</button></div></div></div>',o:initStore},
 games:{n:"nexGames",i:"🎮",w:560,h:430,v:'<div><h1>nexGames</h1><p class="muted">tiny games that run locally.</p><div class="game-grid"><div class="game-card"><b>Clicker</b><br><span id="clickScore">0 clicks</span><br><button id="clickGame">Click!</button></div><div class="game-card"><b>Guess</b><br><small>guess a number from 1–10</small><input id="guessInput" type="number" min="1" max="10"><button id="guessGame">Guess</button><span id="guessResult"></span></div></div></div>',o:initGames},
+music:{n:"nexMusic",i:"♫",w:600,h:420,v:'<div class="view-open"><h1>nexMusic</h1><p class="muted">play local audio files.</p><input id="musicFile" type="file" accept="audio/*"><div id="musicPlayer" class="view-preview">choose an audio file</div></div>',o:initMusic},
+weather:{n:"nexWeather",i:"☁",w:560,h:420,v:'<div><h1>nexWeather</h1><p class="muted">local demo weather dashboard.</p><div class="store-card"><b>New York</b><h2>72°F</h2><span>Partly cloudy • demo data</span></div></div>'},
 paint:{n:"nexPaint",i:"🎨",w:560,h:430,v:'<div><h1>nexPaint</h1><canvas id="paintCanvas" width="500" height="320" style="max-width:100%;background:#fff;border-radius:12px"></canvas></div>',o:initPaint}
 };
 let z=20,count=0;let currentApp="Finder";
@@ -22,7 +24,23 @@ function initPreferences(){initSettings()}
 function initSettings(){const theme=$("#settingTheme"),accent=$("#settingAccent"),size=$("#settingIconSize"),clock24=$("#settingClock24"),dockSize=$("#dockSize"),showDock=$("#showDock"),reduce=$("#reduceMotion"),large=$("#largeText"),contrast=$("#contrast");theme.value=localStorage.nexTheme||"dark";accent.value=localStorage.nexAccent||"blue";size.value=localStorage.nexIconSize||75;clock24.checked=localStorage.nexClock24==="1";dockSize.value=localStorage.nexDockSize||48;showDock.checked=localStorage.nexShowDock!=="0";reduce.checked=localStorage.nexReduce==="1";large.checked=localStorage.nexLarge==="1";contrast.checked=localStorage.nexContrast==="1";const apply=()=>{document.body.classList.toggle("light",theme.value==="light");document.body.dataset.accent=accent.value;document.body.dataset.wall=localStorage.nexWall||"default";iconRoot.style.setProperty("--icon-size",size.value+"px");dockRoot.style.setProperty("--dock-size",dockSize.value+"px");document.body.classList.toggle("reduce-motion",reduce.checked);document.body.classList.toggle("large-text",large.checked);document.body.classList.toggle("high-contrast",contrast.checked);localStorage.nexTheme=theme.value;localStorage.nexAccent=accent.value;localStorage.nexIconSize=size.value;localStorage.nexClock24=clock24.checked?"1":"0";localStorage.nexDockSize=dockSize.value;localStorage.nexShowDock=showDock.checked?"1":"0";localStorage.nexReduce=reduce.checked?"1":"0";localStorage.nexLarge=large.checked?"1":"0";localStorage.nexContrast=contrast.checked?"1":"0";$("#dock").parentElement.classList.toggle("dock-hidden",!showDock.checked);updateClock()};[theme,accent].forEach(x=>x.addEventListener("change",apply));[size,dockSize].forEach(x=>x.addEventListener("input",apply));[clock24,showDock,reduce,large,contrast].forEach(x=>x.addEventListener("change",apply));$("#resetIcons").onclick=()=>{localStorage.removeItem("nexIconPositions");location.reload()};$(".settings-nav button").forEach(b=>b.onclick=()=>{$(".settings-page").forEach(p=>p.classList.add("hidden"));$("#"+b.dataset.page).classList.remove("hidden");$(".settings-nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active")});$("[data-setting]").forEach(b=>b.onclick=()=>{const k=b.dataset.setting;document.body.dataset.wall=k;localStorage.nexWall=k;$("[data-setting]").forEach(x=>x.classList.remove("active"));b.classList.add("active")});$('[data-setting="'+(localStorage.nexWall||"default")+'"]')?.classList.add("active");apply()}
 function saveIconPositions(){const p={};$(".icon").forEach(d=>p[d.dataset.app]={left:d.style.left,top:d.style.top});localStorage.nexIconPositions=JSON.stringify(p)}
 function makeIconMovable(d,id){d.dataset.app=id;let drag=null,moved=false;d.ondblclick=()=>openApp(id);d.onpointerdown=e=>{if(e.button!==0)return;e.preventDefault();e.stopPropagation();$(".icon").forEach(x=>x.classList.remove("selected"));d.classList.add("selected");const r=d.getBoundingClientRect();drag={x:e.clientX-r.left,y:e.clientY-r.top,startX:e.clientX,startY:e.clientY};moved=false;d.setPointerCapture(e.pointerId)};d.onpointermove=e=>{if(!drag)return;e.preventDefault();const dx=e.clientX-drag.startX,dy=e.clientY-drag.startY;if(Math.abs(dx)+Math.abs(dy)>4)moved=true;if(!moved)return;const root=iconRoot.getBoundingClientRect();d.style.left=Math.max(0,e.clientX-root.left-drag.x)+"px";d.style.top=Math.max(0,e.clientY-root.top-drag.y)+"px"};d.onpointerup=e=>{if(!drag)return;e.preventDefault();if(moved)saveIconPositions();drag=null};d.onpointercancel=()=>{drag=null}}
-function populate(){const saved=JSON.parse(localStorage.nexIconPositions||"{}");Object.entries(A).forEach(([id,a])=>{const d=document.createElement("button");d.className="icon";d.innerHTML="<b>"+a.i+"</b><small>"+a.n+"</small>";if(saved[id]){d.style.left=saved[id].left;d.style.top=saved[id].top}else{const n=Object.keys(A).indexOf(id);d.style.left=(n%2)*95+"px";d.style.top=Math.floor(n/2)*90+"px"}makeIconMovable(d,id);iconRoot.appendChild(d);const x=document.createElement("button");x.className="app";x.dataset.app=id;x.innerHTML="<b>"+a.i+"</b><small>"+a.n.replace("About ","")+"</small>";x.onclick=()=>{openApp(id);launcherEl.classList.add("hidden")};appRoot.appendChild(x)})}
+function populate(){
+  const saved=JSON.parse(localStorage.nexIconPositions||"{}");
+  iconRoot.innerHTML="";appRoot.innerHTML="";
+  const core=new Set(["about","files","browser","notes","preferences","terminal","store"]);
+  const visible=Object.entries(A).filter(([id])=>core.has(id)||localStorage.getItem("nexInstalled_"+id)==="1");
+  visible.forEach(([id,a])=>{
+    const d=document.createElement("button");d.className="icon";
+    d.innerHTML="<b>"+a.i+"</b><small>"+a.n+"</small>";
+    if(saved[id]){d.style.left=saved[id].left;d.style.top=saved[id].top}
+    else{const n=visible.findIndex(x=>x[0]===id);d.style.left=(n%2)*95+"px";d.style.top=Math.floor(n/2)*90+"px"}
+    makeIconMovable(d,id);iconRoot.appendChild(d);
+    const x=document.createElement("button");x.className="app";x.dataset.app=id;
+    x.innerHTML="<b>"+a.i+"</b><small>"+a.n.replace("About ","")+"</small>";
+    x.onclick=()=>{openApp(id);launcherEl.classList.add("hidden")};
+    appRoot.appendChild(x)
+  })
+}
 $("#launch").onclick=()=>launcherEl.classList.toggle("hidden");$("#brand").onclick=()=>launcherEl.classList.remove("hidden");document.querySelectorAll("[data-app]").forEach(b=>b.onclick=()=>openApp(b.dataset.app));searchEl.oninput=()=>$$(".app").forEach(x=>x.classList.toggle("hidden",!x.textContent.toLowerCase().includes(searchEl.value.toLowerCase())));document.addEventListener("keydown",e=>{if(e.key==="Escape")launcherEl.classList.add("hidden")});
 function updateClock(){clockEl.textContent=new Intl.DateTimeFormat([],{weekday:"short",hour:"numeric",minute:"2-digit"}).format(new Date())}setInterval(updateClock,1000);updateClock();
 function updateLockClock(){const d=new Date();$("#lockTime").textContent=new Intl.DateTimeFormat([],{hour:"numeric",minute:"2-digit"}).format(d);$("#lockDate").textContent=new Intl.DateTimeFormat([],{weekday:"long",month:"long",day:"numeric"}).format(d)}setInterval(updateLockClock,1000);
@@ -104,28 +122,38 @@ function initTerminal(){
 }
 function initJot(){const n=$("#notes"),s=$("#jotStatus");n.value=localStorage.nexNotes||"";$("#jotSave").onclick=()=>{localStorage.nexNotes=n.value;s.textContent="Saved ✓";setTimeout(()=>s.textContent="",1200)}}
 function initView(){const input=$("#viewFile"),p=$("#viewPreview");input.onchange=()=>{const f=input.files[0];if(!f)return;const u=URL.createObjectURL(f);p.innerHTML="";if(f.type.startsWith("image/")){const x=document.createElement("img");x.src=u;p.appendChild(x)}else if(f.type.startsWith("video/")){const x=document.createElement("video");x.src=u;x.controls=true;p.appendChild(x)}else if(f.type.startsWith("audio/")){const x=document.createElement("audio");x.src=u;x.controls=true;p.appendChild(x)}else p.textContent="unsupported file"}}
+function initMusic(){
+  const input=$("#musicFile"),player=$("#musicPlayer");
+  input.onchange=()=>{
+    const f=input.files?.[0];if(!f)return;
+    const url=URL.createObjectURL(f);
+    player.innerHTML="";
+    const a=document.createElement("audio");a.controls=true;a.src=url;a.style.width="90%";
+    player.appendChild(a)
+  }
+}
 function initStore(){
   const cards=$("[data-install]");
   const sync=()=>{
     cards.forEach(b=>{
-      const id=b.dataset.install;
+      const key=b.dataset.install;
+      const id=STORE_APP_IDS[key]||key;
       const installed=localStorage.getItem("nexInstalled_"+id)==="1";
       b.textContent=installed?"Open":"Install";
       b.disabled=false;
-      b.classList.toggle("installed",installed);
+      b.classList.toggle("installed",installed)
     })
   };
   cards.forEach(b=>b.onclick=()=>{
-    const id=b.dataset.install;
-    const installed=localStorage.getItem("nexInstalled_"+id)==="1";
-    if(installed){openApp(id);return}
+    const key=b.dataset.install,id=STORE_APP_IDS[key]||key;
+    if(!A[id]){b.textContent="Unavailable";b.disabled=true;return}
+    if(localStorage.getItem("nexInstalled_"+id)==="1"){openApp(id);return}
     localStorage.setItem("nexInstalled_"+id,"1");
-    b.textContent="Installed ✓";
-    b.disabled=true;
-    setTimeout(sync,900);
-    renderIcons?.();
+    b.textContent="Installed ✓";b.disabled=true;
+    populate();
+    setTimeout(sync,900)
   });
-  sync();
+  sync()
 }
 function initGames(){let score=0;$("#clickGame").onclick=()=>{$("#clickScore").textContent=++score+" clicks"};const n=Math.floor(Math.random()*10)+1;$("#guessGame").onclick=()=>{$("#guessResult").textContent=Number($("#guessInput").value)===n?" 🎉 correct!":" nope 😭"}}
 function initPaint(){const c=$("#paintCanvas"),x=c.getContext("2d");let down=false;c.onpointerdown=e=>{down=true;x.beginPath();x.moveTo(e.offsetX,e.offsetY)};c.onpointermove=e=>{if(!down)return;x.lineTo(e.offsetX,e.offsetY);x.stroke()};c.onpointerup=()=>down=false}
