@@ -1,18 +1,17 @@
 {
   "name": "nexos",
   "private": true,
-  "version": "0.2.0",
-  "description": "nexOS web desktop",
+  "version": "0.4.0",
+  "description": "nexOS web desktop with Scramjet and a real Alpine Linux WebAssembly VM",
   "scripts": {
-    "build:uv": "node scripts/build-uv.mjs"
+    "build:proxy": "node scripts/build-proxy.mjs",
+    "build:alpine": "bash scripts/build-alpine.sh",
+    "build": "npm run build:proxy && npm run build:alpine"
   },
-  "devDependencies": {
-    "@titaniumnetwork-dev/ultraviolet": "3.2.10"
-  },
+  "devDependencies": {},
   "dependencies": {
-    "@titaniumnetwork-dev/ultraviolet": "3.2.10",
+    "@mercuryworkshop/scramjet": "1.1.0",
     "@mercuryworkshop/bare-mux": "2.1.9",
-    "@mercuryworkshop/epoxy-transport": "2.1.28",
     "@mercuryworkshop/libcurl-transport": "^1.5.2"
   }
 }
