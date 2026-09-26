@@ -9,9 +9,7 @@ browser:{n:"nexite",i:"◎",w:760,h:500,v:'<div class="browser"><div class="brow
 notes:{n:"nexJot",i:"▤",w:560,h:440,v:'<div class="jot"><div class="jot-toolbar"><button id="jotSave">Save</button><span id="jotStatus"></span></div><textarea id="notes" placeholder="Start typing…"></textarea></div>',o:initJot},
 preferences:{n:"Preferences",i:"⚙",w:760,h:540,v:'<div class="settings-shell"><aside class="settings-nav"><button data-page="appearance" class="active">🎨 <span>Appearance</span></button><button data-page="wallpaper">🖼 <span>Wallpaper</span></button><button data-page="desktopPage">🖥 <span>Desktop</span></button><button data-page="dockPage">▰ <span>Dock</span></button><button data-page="accessPage">♿ <span>Accessibility</span></button><button data-page="aboutPage">ⓘ <span>About</span></button></aside><div class="settings-content"><div id="appearance" class="settings-page"><h1>Appearance</h1><p>Customize nexOS.</p><section><label>Color scheme <select id="settingTheme"><option value="dark">Dark</option><option value="light">Light</option></select></label><label>Accent color <select id="settingAccent"><option value="blue">Blue</option><option value="violet">Violet</option><option value="pink">Pink</option></select></label></section></div><div id="wallpaper" class="settings-page hidden"><h1>Wallpaper</h1><p>Choose a background.</p><div class="wall-grid"><button data-setting="default" class="wall-card wall-default">Default</button><button data-setting="midnight" class="wall-card wall-midnight">Midnight</button><button data-setting="sunset" class="wall-card wall-sunset">Sunset</button><button data-setting="aurora" class="wall-card wall-aurora">Aurora</button><button data-setting="ocean" class="wall-card wall-ocean">Ocean</button><button data-setting="rose" class="wall-card wall-rose">Rose</button><button data-setting="forest" class="wall-card wall-forest">Forest</button><button data-setting="mono" class="wall-card wall-mono">Mono</button></div></div><div id="desktopPage" class="settings-page hidden"><h1>Desktop</h1><section><label>Icon size <input id="settingIconSize" type="range" min="60" max="110" value="75"></label><button id="resetIcons">Reset icon positions</button></section><section><label class="check"><input id="settingClock24" type="checkbox"> 24-hour clock</label></section></div><div id="dockPage" class="settings-page hidden"><h1>Dock</h1><section><label>Dock icon size <input id="dockSize" type="range" min="40" max="64" value="48"></label><label class="check"><input id="showDock" type="checkbox" checked> Show dock</label></section></div><div id="accessPage" class="settings-page hidden"><h1>Accessibility</h1><section><label class="check"><input id="reduceMotion" type="checkbox"> Reduce motion</label><label class="check"><input id="largeText" type="checkbox"> Larger text</label><label class="check"><input id="contrast" type="checkbox"> High contrast</label></section></div><div id="aboutPage" class="settings-page hidden"><h1>About nexOS</h1><p>nexOS 0.3 • browser edition</p></div></div></div>',o:initPreferences},
 terminal:{n:"nexTerm",i:"⌘",w:760,h:500,v:'<div class="term"><div class="alpine-toolbar"><span><b>nexTerm</b> • real Alpine Linux</span><span id="alpineStatus">waiting to boot…</span><button id="alpineBoot">Boot</button><button id="alpineRestart">Restart</button><button id="alpineSave">Save VM</button><button id="alpineRestore">Restore VM</button><input id="alpineRestoreFile" type="file" accept=".bin,.zst" hidden></div><div id="alpineScreen" class="alpine-screen"><div class="alpine-placeholder">real Alpine Linux • WebAssembly x86 VM<br><small>booting only happens when you press Boot</small></div></div></div>',o:initTerminal},
-store:{n:"nexStore",i:"🛍",w:680,h:500,v:'<div><h1>nexStore</h1><p class="muted">Apps made for nexOS.</p><div class="store-grid"><div class="store-card"><b>nexPaint</b><br><small>Simple drawing pad.</small><br><button data-install="nexPaint">Install</button></div><div class="store-card"><b>nexMusic</b><br><small>Local audio player.</small><br><button data-install="nexMusic">Install</button></div><div class="store-card"><b>nexGames</b><br><small>Mini games collection.</small><br><button data-install="nexGames">Install</button></div><div class="store-card"><b>nexWeather</b><br><small>Weather dashboard shell.</small><br><button data-install="nexWeather">Install</button></div><div class="store-card"><b>nexAI</b><br><small>Built-in local assistant.</small><br><button data-install="nexAI">Install</button></div><div class="store-card"><b>nexChat</b><br><small>Chat between open nexOS tabs.</small><br><button data-install="nexChat">Install</button></div></div></div>',o:initStore},
-ai:{n:"nexAI",i:"🧠",w:620,h:500,v:'<div class="ai-app"><h1>nexAI</h1><p class="muted">a tiny local assistant — no API key needed.</p><div id="aiLog" class="ai-log"><div class="ai-msg bot">hey 👋 ask me about nexOS, apps, or type <b>help</b>.</div></div><div class="ai-bar"><input id="aiInput" placeholder="Ask nexAI…"><button id="aiSend">Send</button></div></div>',o:initAI},
-chat:{n:"nexChat",i:"💬",w:620,h:500,v:'<div class="chat-app"><h1>nexChat</h1><p class="muted">messages sync between nexOS tabs on this browser.</p><div id="chatLog" class="chat-log"></div><div class="chat-bar"><input id="chatInput" placeholder="Message…"><button id="chatSend">Send</button></div></div>',o:initChat},
+store:{n:"nexStore",i:"🛍",w:720,h:520,v:'<div class="store-app"><div class="store-head"><div><h1>nexStore</h1><p class="muted">apps fetched from the nexOS community catalog.</p></div><button id="storeRefresh">↻ Refresh</button></div><div id="storeStatus" class="muted">loading catalog…</div><div id="storeGrid" class="store-grid"></div></div>',o:initStore},
 games:{n:"nexGames",i:"🎮",w:560,h:430,v:'<div><h1>nexGames</h1><p class="muted">tiny games that run locally.</p><div class="game-grid"><div class="game-card"><b>Clicker</b><br><span id="clickScore">0 clicks</span><br><button id="clickGame">Click!</button></div><div class="game-card"><b>Guess</b><br><small>guess a number from 1–10</small><input id="guessInput" type="number" min="1" max="10"><button id="guessGame">Guess</button><span id="guessResult"></span></div></div></div>',o:initGames},
 music:{n:"nexMusic",i:"♫",w:600,h:420,v:'<div class="view-open"><h1>nexMusic</h1><p class="muted">play local audio files.</p><input id="musicFile" type="file" accept="audio/*"><div id="musicPlayer" class="view-preview">choose an audio file</div></div>',o:initMusic},
 weather:{n:"nexWeather",i:"☁",w:560,h:420,v:'<div><h1>nexWeather</h1><p class="muted">local demo weather dashboard.</p><div class="store-card"><b>New York</b><h2>72°F</h2><span>Partly cloudy • demo data</span></div></div>'},
@@ -31,17 +29,17 @@ function populate(){
   const saved=JSON.parse(localStorage.nexIconPositions||"{}");
   iconRoot.innerHTML="";appRoot.innerHTML="";
   const core=new Set(["about","files","browser","notes","preferences","terminal","store"]);
+  const installedPkgs=Object.values(getPackages());
   const visible=Object.entries(A).filter(([id])=>core.has(id)||localStorage.getItem("nexInstalled_"+id)==="1");
   visible.forEach(([id,a])=>{
-    const d=document.createElement("button");d.className="icon";
-    d.innerHTML="<b>"+a.i+"</b><small>"+a.n+"</small>";
-    if(saved[id]){d.style.left=saved[id].left;d.style.top=saved[id].top}
-    else{const n=visible.findIndex(x=>x[0]===id);d.style.left=(n%2)*95+"px";d.style.top=Math.floor(n/2)*90+"px"}
+    const d=document.createElement("button");d.className="icon";d.innerHTML="<b>"+a.i+"</b><small>"+a.n+"</small>";
+    if(saved[id]){d.style.left=saved[id].left;d.style.top=saved[id].top}else{const n=visible.findIndex(x=>x[0]===id);d.style.left=(n%2)*95+"px";d.style.top=Math.floor(n/2)*90+"px"}
     makeIconMovable(d,id);iconRoot.appendChild(d);
-    const x=document.createElement("button");x.className="app";x.dataset.app=id;
-    x.innerHTML="<b>"+a.i+"</b><small>"+a.n.replace("About ","")+"</small>";
-    x.onclick=()=>{openApp(id);launcherEl.classList.add("hidden")};
-    appRoot.appendChild(x)
+    const x=document.createElement("button");x.className="app";x.dataset.app=id;x.innerHTML="<b>"+a.i+"</b><small>"+a.n.replace("About ","")+"</small>";x.onclick=()=>{openApp(id);launcherEl.classList.add("hidden")};appRoot.appendChild(x)
+  });
+  installedPkgs.forEach((p,i)=>{
+    const d=document.createElement("button");d.className="icon";d.innerHTML="<b>"+(p.icon||"📦")+"</b><small>"+p.name+"</small>";d.style.left=(i%2)*95+"px";d.style.top=(Math.floor((visible.length+i)/2))*90+"px";d.ondblclick=()=>openPackage(p.id);d.onclick=()=>{$$(".icon").forEach(x=>x.classList.remove("selected"));d.classList.add("selected")};iconRoot.appendChild(d);
+    const x=document.createElement("button");x.className="app";x.innerHTML="<b>"+(p.icon||"📦")+"</b><small>"+p.name+"</small>";x.onclick=()=>{openPackage(p.id);launcherEl.classList.add("hidden")};appRoot.appendChild(x)
   })
 }
 $("#launch").onclick=()=>launcherEl.classList.toggle("hidden");$("#brand").onclick=()=>launcherEl.classList.remove("hidden");document.querySelectorAll("[data-app]").forEach(b=>b.onclick=()=>openApp(b.dataset.app));searchEl.oninput=()=>$$(".app").forEach(x=>x.classList.toggle("hidden",!x.textContent.toLowerCase().includes(searchEl.value.toLowerCase())));document.addEventListener("keydown",e=>{if(e.key==="Escape")launcherEl.classList.add("hidden")});
@@ -135,31 +133,41 @@ function initMusic(){
     player.appendChild(a)
   }
 }
-function initStore(){
-  const cards=$("[data-install]");
-  const sync=()=>{
-    cards.forEach(b=>{
-      const key=b.dataset.install;
-      const id=STORE_APP_IDS[key]||key;
-      const installed=localStorage.getItem("nexInstalled_"+id)==="1";
-      b.textContent=installed?"Open":"Install";
-      b.disabled=false;
-      b.classList.toggle("installed",installed)
-    })
+function getPackages(){try{return JSON.parse(localStorage.nexPackages||"{}")}catch{return{}}}
+function savePackages(p){localStorage.nexPackages=JSON.stringify(p)}
+function openPackage(id){const p=getPackages()[id];if(!p?.entry)return;const w=document.createElement("section");w.className="window";w.dataset.pkg=id;w.style.width="680px";w.style.height="500px";w.style.left=140+(count++%4)*30+"px";w.style.top=80+(count%4)*25+"px";w.style.zIndex=++z;w.innerHTML='<div class="title"><div class="traffic"><button class="x"></button><button class="m"></button><button class="g"></button></div><strong>'+p.name+'</strong></div><div class="body" style="padding:0"><iframe title="'+p.name+'" src="'+p.entry+'" sandbox="allow-scripts allow-forms allow-popups allow-modals" style="width:100%;height:100%;border:0;border-radius:0 0 12px 12px;background:#080a10"></iframe></div><div class="resize"></div>';winRoot.appendChild(w);requestAnimationFrame(()=>w.classList.add("shown"));wireWindow(w);setCurrentApp(id);renderDock()}
+async function initStore(){
+  const grid=$("#storeGrid"),status=$("#storeStatus"),refresh=$("#storeRefresh");
+  const catalogUrl="https://raw.githubusercontent.com/techmaster2013/nexOS/main/store/catalog.json";
+  const render=items=>{
+    const installed=getPackages();grid.innerHTML="";
+    items.forEach(p=>{
+      const card=document.createElement("div");card.className="store-card";
+      card.innerHTML='<div class="store-icon">'+(p.icon||"📦")+'</div><b>'+p.name+'</b><small>v'+p.version+'</small><p>'+p.description+'</p><button></button>';
+      const b=card.querySelector("button");const is=!!installed[p.id];b.textContent=is?"Open":"Install";
+      b.onclick=async()=>{
+        if(is){openPackage(p.id);return}
+        b.disabled=true;b.textContent="Downloading…";
+        try{
+          const res=await fetch(p.package,{cache:"no-store"});if(!res.ok)throw new Error("package fetch "+res.status);
+          const pkg=await res.json();
+          if(pkg.format!=="nexpkg"||pkg.version!==1||pkg.id!==p.id||!pkg.entry)throw new Error("invalid nexPKG");
+          const all=getPackages();all[pkg.id]=pkg;savePackages(all);populate();render(items);status.textContent=pkg.name+" installed ✓"
+        }catch(e){console.error(e);b.disabled=false;b.textContent="Retry";status.textContent="couldn't install "+p.name}
+      };
+      grid.appendChild(card)
+    });
   };
-  cards.forEach(b=>b.onclick=()=>{
-    const key=b.dataset.install,id=STORE_APP_IDS[key]||key;
-    if(!A[id]){b.textContent="Unavailable";b.disabled=true;return}
-    if(localStorage.getItem("nexInstalled_"+id)==="1"){openApp(id);return}
-    localStorage.setItem("nexInstalled_"+id,"1");
-    b.textContent="Installed ✓";b.disabled=true;
-    populate();
-    setTimeout(sync,900)
-  });
-  sync()
+  const load=async()=>{
+    status.textContent="fetching catalog…";refresh.disabled=true;
+    try{
+      const res=await fetch(catalogUrl+"?t="+Date.now(),{cache:"no-store"});if(!res.ok)throw new Error("catalog "+res.status);
+      const data=await res.json();render(data.packages||[]);status.textContent=(data.packages||[]).length+" packages available • live from GitHub"
+    }catch(e){console.error(e);status.textContent="catalog unavailable — check your connection";grid.innerHTML='<div class="store-card"><b>nexStore offline</b><p>GitHub catalog could not be reached.</p></div>'}
+    refresh.disabled=false
+  };
+  refresh.onclick=load;load()
 }
-function initAI(){const log=$("#aiLog"),input=$("#aiInput"),send=$("#aiSend");const reply=q=>{const s=q.toLowerCase();if(s==="help"||s.includes("what can you do"))return"I can explain nexOS, tell you how the Store works, and give quick tips.";if(s.includes("store")||s.includes("install"))return"nexStore installs apps locally. Install once and the app appears on your desktop + launcher; the install state is saved in this browser.";if(s.includes("scramjet")||s.includes("browser"))return"nexite uses Scramjet 2 to load proxied web pages.";if(s.includes("terminal")||s.includes("alpine"))return"nexTerm boots a real Alpine Linux x86 VM through v86 + WebAssembly.";if(s.includes("t9"))return"T9 OS inspired this batch: AI, chat, games and a built-in proxy are the big ideas.";return"i’m still a tiny local assistant 😭 try asking about nexOS, the Store, nexite, or nexTerm."};const sendMsg=()=>{const q=input.value.trim();if(!q)return;log.insertAdjacentHTML("beforeend",'<div class="ai-msg user"></div>');log.lastElementChild.textContent=q;log.insertAdjacentHTML("beforeend",'<div class="ai-msg bot"></div>');log.lastElementChild.textContent=reply(q);log.scrollTop=log.scrollHeight;input.value=""};send.onclick=sendMsg;input.onkeydown=e=>{if(e.key==="Enter")sendMsg()}}
-function initChat(){const log=$("#chatLog"),input=$("#chatInput"),send=$("#chatSend");let channel=null;try{channel=new BroadcastChannel("nexOS-chat")}catch{}const add=(name,msg,me)=>{const d=document.createElement("div");d.className="chat-msg "+(me?"me":"");d.textContent=(me?"you":"tab")+": "+msg;log.appendChild(d);log.scrollTop=log.scrollHeight};if(channel)channel.onmessage=e=>add("tab",e.data,false);const sendMsg=()=>{const msg=input.value.trim();if(!msg)return;add("you",msg,true);channel?.postMessage(msg);input.value=""};send.onclick=sendMsg;input.onkeydown=e=>{if(e.key==="Enter")sendMsg()}}
 function initGames(){let score=0;$("#clickGame").onclick=()=>{$("#clickScore").textContent=++score+" clicks"};const n=Math.floor(Math.random()*10)+1;$("#guessGame").onclick=()=>{$("#guessResult").textContent=Number($("#guessInput").value)===n?" 🎉 correct!":" nope 😭"}}
 function initPaint(){const c=$("#paintCanvas"),x=c.getContext("2d");let down=false;c.onpointerdown=e=>{down=true;x.beginPath();x.moveTo(e.offsetX,e.offsetY)};c.onpointermove=e=>{if(!down)return;x.lineTo(e.offsetX,e.offsetY);x.stroke()};c.onpointerup=()=>down=false}
 function initBrowser(){
