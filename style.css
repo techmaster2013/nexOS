@@ -31,3 +31,22 @@ body[data-wall="aurora"] #desktop{--wall:radial-gradient(circle at 75% 20%,#55ff
 .alpine-screen>div:first-child{width:100%!important;height:100%!important}
 .alpine-screen canvas{max-width:100%;height:auto}
 .alpine-placeholder{display:grid;place-items:center;height:100%;min-height:300px;text-align:center;color:#9ca3af;font-family:ui-monospace,SFMono-Regular,monospace;line-height:1.7}
+
+/* nexOS cursor + T9-inspired apps */
+html,body,#desktop{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M6 3l18 16-8 1 5 9-4 2-5-10-6 6z' fill='%230b0d12' stroke='%23ffffff' stroke-width='2'/%3E%3Ccircle cx='24' cy='7' r='3' fill='%2391b9ff' opacity='.9'/%3E%3C/svg%3E") 5 3,default}
+button,a{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M6 3l18 16-8 1 5 9-4 2-5-10-6 6z' fill='%2391b9ff' stroke='%230b0d12' stroke-width='2'/%3E%3C/svg%3E") 5 3,pointer}
+input,textarea{cursor:text}
+.icon{cursor:grab}.icon:active{cursor:grabbing}
+.ai-app,.chat-app{display:flex;flex-direction:column;height:100%;min-height:330px}
+.ai-log,.chat-log{flex:1;min-height:0;overflow:auto;padding:10px;border:1px solid var(--border);border-radius:13px;background:#0002}
+.ai-msg,.chat-msg{max-width:82%;padding:9px 12px;margin:6px 0;border-radius:13px;background:#fff1;line-height:1.4;font-size:13px}
+.ai-msg.user,.chat-msg.me{margin-left:auto;background:#91b9ff2b}
+.ai-msg.bot{border:1px solid #91b9ff22}
+.ai-bar,.chat-bar{display:flex;gap:8px;margin-top:10px}
+.ai-bar input,.chat-bar input{flex:1;padding:11px 13px;border:1px solid var(--border);border-radius:11px;background:#fff1;outline:0}
+.ai-bar button,.chat-bar button{padding:10px 15px;border-radius:11px;background:var(--accent);color:#0b0d12;font-weight:700}
+.store-card button.installed{background:#8dffb033;color:#bfffcf}
+.dock-hidden{display:none!important}
+.reduce-motion *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+.large-text{font-size:110%}
+.high-contrast .window,.high-contrast header,.high-contrast footer{border-color:#fff8;background:#090b10f5}
