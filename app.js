@@ -163,7 +163,7 @@ function initBrowser(){
   let ready=false,scramjet=null,connection=null,currentFrame=null;
   const makeUrl=()=>{
     let u=input.value.trim();if(!u)return null;
-    if(!/^https?:\\/\\//i.test(u))u="https://www.google.com/search?q="+encodeURIComponent(u);
+    if(!/^https?:\/\//i.test(u))u="https://www.google.com/search?q="+encodeURIComponent(u);
     input.value=u;return u
   };
   const start=async()=>{
