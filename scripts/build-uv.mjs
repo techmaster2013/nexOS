@@ -21,8 +21,12 @@ await cp(join(muxSource, "index.js"), join(mux, "index.js"));
 await cp(join(muxSource, "worker.js"), join(mux, "worker.js"));
 
 const epoxySource = join(root, "node_modules/@mercuryworkshop/epoxy-transport/dist");
+const libcurlSource = join(root, "node_modules/@mercuryworkshop/libcurl-transport/dist");
 const epoxy = join(root, "epoxy");
 await mkdir(epoxy, { recursive: true });
 await cp(join(epoxySource, "index.mjs"), join(epoxy, "index.mjs"));
+const libcurl = join(root, "libcurl");
+await mkdir(libcurl, { recursive: true });
+await cp(join(libcurlSource, "index.mjs"), join(libcurl, "index.mjs"));
 
 console.log("Ultraviolet + bare-mux + Epoxy assets built.");
