@@ -50,3 +50,5 @@ input,textarea{cursor:text}
 .reduce-motion *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 .large-text{font-size:110%}
 .high-contrast .window,.high-contrast header,.high-contrast footer{border-color:#fff8;background:#090b10f5}
+
+.store-app{display:flex;flex-direction:column;height:100%;min-height:360px}.store-head{display:flex;align-items:center;gap:12px}.store-head>div{flex:1}.store-head h1{margin-bottom:2px}.store-head button{padding:8px 12px;border-radius:10px;background:#fff1;border:1px solid var(--border)}#storeStatus{margin:8px 0 12px}.store-grid{overflow:auto}.store-card{position:relative}.store-card .store-icon{font-size:30px;margin-bottom:6px}.store-card small{display:block;color:var(--muted);margin-top:3px}.store-card p{font-size:12px;color:var(--muted);min-height:32px}.store-card button{background:var(--accent);color:#0b0d12;font-weight:700}.store-card button:disabled{opacity:.55;cursor:wait}
