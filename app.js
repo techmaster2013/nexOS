@@ -1,7 +1,8 @@
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const winRoot=$("#windows"),iconRoot=$("#icons"),appRoot=$("#apps"),dockRoot=$("#dock"),launcherEl=$("#launcher"),searchEl=$("#search"),clockEl=$("#clock");
 const power=$("#power"),setup=$("#setup"),boot=$("#boot"),desktop=$("#desktop"),lock=$("#lock"),powerBtn=$("#powerBtn"),setupContinue=$("#setupContinue"),chime=$("#bootChime");
-const STORE_APP_IDS={nexPaint:"paint",nexGames:"games",nexMusic:"music",nexWeather:"weather"};\nconst A={
+const STORE_APP_IDS={nexPaint:"paint",nexGames:"games",nexMusic:"music",nexWeather:"weather"};
+const A={
 about:{n:"About nexOS",i:"◈",w:480,h:320,v:'<div class="welcome"><h1>nexOS</h1><p class="muted">KDE Plasma × macOS-inspired web desktop • Scramjet + WebAssembly</p><p>Glass panels, a dock, real apps and a real Alpine Linux VM.</p><p class="muted">nexOS 0.3 • browser edition</p></div>'},
 files:{n:"nexView",i:"▣",w:620,h:460,v:'<div class="view-open"><h2>nexView</h2><p class="muted">Open pictures, video and audio from your device.</p><input id="viewFile" type="file" accept="image/*,video/*,audio/*"><div id="viewPreview" class="view-preview">choose a file</div></div>',o:initView},
 browser:{n:"nexite",i:"◎",w:760,h:500,v:'<div class="browser"><div class="browserbar"><button id="back">‹</button><button id="forward">›</button><input id="url" value="https://example.com" placeholder="Search or enter address"><button id="go">Open</button></div><div class="browserinfo"><strong>nexOS Browser</strong><span id="uvStatus">nexite • starting transport…</span></div><div class="browserview"><div class="browser-home"><div class="browser-mark">◎</div><h2>Browse the web</h2><p>Scramjet proxy engine + transport.</p><button id="browserOpen">Open proxied page ↗</button></div><iframe id="uvFrame" title="nexOS proxied browser" referrerpolicy="no-referrer"></iframe></div></div>',o:initBrowser},
