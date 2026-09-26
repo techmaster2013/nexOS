@@ -28,7 +28,7 @@ function makeIconMovable(d,id){d.dataset.app=id;let drag=null,moved=false;d.ondb
 function populate(){
   const saved=JSON.parse(localStorage.nexIconPositions||"{}");
   iconRoot.innerHTML="";appRoot.innerHTML="";
-  const core=new Set(["about","files","browser","notes","preferences","terminal","store"]);
+  const core=new Set(["about","files","browser","notes","preferences","terminal","store","ai","chat"]);
   const installedPkgs=Object.values(getPackages());
   const visible=Object.entries(A).filter(([id])=>core.has(id)||localStorage.getItem("nexInstalled_"+id)==="1");
   visible.forEach(([id,a])=>{
