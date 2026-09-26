@@ -1,8 +1,8 @@
 {
   "name": "nexos",
   "private": true,
-  "version": "0.4.0",
-  "description": "nexOS web desktop with Scramjet and a real Alpine Linux WebAssembly VM",
+  "version": "0.5.0",
+  "description": "nexOS web desktop with Scramjet 2 and a real Alpine Linux WebAssembly VM",
   "scripts": {
     "build:proxy": "node scripts/build-proxy.mjs",
     "build:alpine": "bash scripts/build-alpine.sh",
@@ -10,8 +10,8 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@mercuryworkshop/scramjet": "1.1.0",
-    "@mercuryworkshop/bare-mux": "2.1.9",
-    "@mercuryworkshop/libcurl-transport": "^1.5.2"
+    "@mercuryworkshop/scramjet": "2.0.67-alpha.2",
+    "@mercuryworkshop/scramjet-controller": "0.0.14",
+    "@mercuryworkshop/libcurl-transport": "2.0.5"
   }
 }
