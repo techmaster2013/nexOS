@@ -23,3 +23,11 @@ body[data-wall="aurora"] #desktop{--wall:radial-gradient(circle at 75% 20%,#55ff
 .view-open{display:flex;flex-direction:column;height:100%;gap:10px}.view-open input{padding:10px;border:1px solid var(--border);border-radius:10px;background:#fff1}.view-preview{flex:1;min-height:180px;display:grid;place-items:center;border:1px solid var(--border);border-radius:14px;background:#0002;overflow:hidden}.view-preview img,.view-preview video{max-width:100%;max-height:100%}.view-preview audio{width:90%}
 .store-grid,.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.store-card,.game-card{padding:14px;border:1px solid var(--border);border-radius:14px;background:#fff1}.store-card button,.game-card button{margin-top:9px;padding:7px 10px;border-radius:8px;background:var(--accent)}
 .term-output{max-height:290px;overflow:auto}.term-input{display:flex;gap:7px;align-items:center}.term-input input{flex:1;background:transparent;border:0;outline:0}
+
+.alpine-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:8px;border-bottom:1px solid var(--border);background:#fff1;font-size:12px}
+.alpine-toolbar>span:first-child{margin-right:auto}
+.alpine-toolbar button{padding:6px 9px;border-radius:8px;background:#fff1}
+.alpine-screen{position:relative;flex:1;min-height:360px;overflow:hidden;background:#050608;border-radius:0 0 12px 12px}
+.alpine-screen>div:first-child{width:100%!important;height:100%!important}
+.alpine-screen canvas{max-width:100%;height:auto}
+.alpine-placeholder{display:grid;place-items:center;height:100%;min-height:300px;text-align:center;color:#9ca3af;font-family:ui-monospace,SFMono-Regular,monospace;line-height:1.7}
