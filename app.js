@@ -160,7 +160,8 @@ function initGames(){let score=0;$("#clickGame").onclick=()=>{$("#clickScore").t
 function initPaint(){const c=$("#paintCanvas"),x=c.getContext("2d");let down=false;c.onpointerdown=e=>{down=true;x.beginPath();x.moveTo(e.offsetX,e.offsetY)};c.onpointermove=e=>{if(!down)return;x.lineTo(e.offsetX,e.offsetY);x.stroke()};c.onpointerup=()=>down=false}
 function initBrowser(){
   const input=$("#url"),frame=$("#uvFrame"),view=$(".browserview"),status=$("#uvStatus");
-  let ready=false,scramjet=null,connection=null,currentFrame=null;
+  let ready=false,controller=null,currentFrame=null;
+  const base=new URL("./",location.href).pathname;
   const makeUrl=()=>{
     let u=input.value.trim();if(!u)return null;
     if(!/^https?:\/\//i.test(u))u="https://www.google.com/search?q="+encodeURIComponent(u);
@@ -169,20 +170,34 @@ function initBrowser(){
   const start=async()=>{
     try{
       if(!("serviceWorker" in navigator))throw new Error("Service workers are unavailable");
-      if(typeof $scramjetLoadController!=="function")throw new Error("Scramjet failed to load");
-      const {ScramjetController}= $scramjetLoadController();
-      scramjet=new ScramjetController({
-        files:{wasm:"./scram/scramjet.wasm.wasm",all:"./scram/scramjet.all.js",sync:"./scram/scramjet.sync.js"}
+      await navigator.serviceWorker.register("./sw.js",{scope:base});
+      if(!navigator.serviceWorker.controller){
+        await new Promise(resolve=>{
+          const done=()=>{navigator.serviceWorker.removeEventListener("controllerchange",done);resolve()};
+          navigator.serviceWorker.addEventListener("controllerchange",done,{once:true});
+          setTimeout(resolve,5000)
+        })
+      }
+      const Controller=globalThis.$scramjetController?.Controller;
+      if(!Controller)throw new Error("Scramjet 2 controller failed to load");
+      const {default:LibcurlClient}=await import("./libcurl/index.mjs");
+      const transport=new LibcurlClient({wisp:"wss://wisp.mercurywork.shop/"});
+      await transport.init?.();
+      controller=new Controller({
+        serviceworker:navigator.serviceWorker.controller,
+        transport,
+        config:{
+          prefix:base+"~/sj/",
+          scramjetPath:base+"scramjet/scramjet.js",
+          injectPath:base+"controller/controller.inject.js",
+          wasmPath:base+"scramjet/scramjet.wasm"
+        }
       });
-      scramjet.init();
-      await navigator.serviceWorker.register("./sw.js");
-      connection=new BareMux.BareMuxConnection("./baremux/worker.js");
-      const wisp="wss://wisp.mercurywork.shop/";
-      await connection.setTransport("./libcurl/index.mjs",[{websocket:wisp}]);
-      ready=true;status.textContent="nexite • Scramjet ready"
+      await controller.wait();
+      ready=true;status.textContent="nexite • Scramjet 2 ready"
     }catch(e){
-      console.error("nexite Scramjet startup failed",e);
-      status.textContent="nexite • Scramjet failed"
+      console.error("nexite Scramjet 2 startup failed",e);
+      status.textContent="nexite • Scramjet failed";
     }
   };
   const open=async()=>{
@@ -190,11 +205,11 @@ function initBrowser(){
     if(!ready)await start();
     if(!ready)return;
     try{
-      if(currentFrame)currentFrame.frame.remove();
-      currentFrame=scramjet.createFrame();
-      currentFrame.frame.id="uvFrame";
+      if(currentFrame?.element)currentFrame.element.remove();
+      currentFrame=controller.createFrame();
+      currentFrame.element.id="uvFrame";
       frame?.remove();
-      view.appendChild(currentFrame.frame);
+      view.appendChild(currentFrame.element);
       currentFrame.go(u)
     }catch(e){console.error(e);status.textContent="nexite • navigation failed"}
   };
