@@ -1,11 +1,56 @@
-const A={about:{n:"About nexOS",i:"◈",w:480,h:320,v:'<div class="welcome"><h1>nexOS</h1><p class="muted">KDE Plasma × macOS-inspired web desktop.</p><p>Glass panels, a dock, launcher, draggable windows and real little apps.</p><p class="muted">nexOS 0.1 • browser edition</p></div>'},files:{n:"Files",i:"▣",w:580,h:380,v:'<div class="rows"><h2>Home</h2><div>📁 Documents <span>Folder</span></div><div>🖼 Pictures <span>Folder</span></div><div>⬇ Downloads <span>Folder</span></div></div>'},notes:{n:"Notes",i:"▤",w:520,h:410,v:'<textarea id="notes" placeholder="Start typing…"></textarea>',o:()=>{notes.value=localStorage.nexNotes||"";notes.oninput=()=>localStorage.nexNotes=notes.value}},settings:{n:"Settings",i:"⚙",w:500,h:350,v:'<div class="rows"><h2>Appearance</h2><div>Style <span>KDE Plasma × macOS</span></div><div>Accent <span>Blue / Violet</span></div><div>Theme <button id="theme">Toggle light mode</button></div></div>',o:()=>theme.onclick=()=>document.body.classList.toggle("light")},calculator:{n:"Calculator",i:"⌗",w:350,h:430,v:'<div class="calc"><output id="out">0</output>'+["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+"].map(x=>'<button data-k="'+x+'">'+x+'</button>').join("")+'<button data-k="C">C</button></div>',o:calc},terminal:{n:"Terminal",i:"⌘",w:600,h:390,v:'<div class="term" id="term">nexOS Terminal v0.1<br><span class="muted">type help</span><br>nex@web:~$ <input id="cmd" autocomplete="off"></div>',o:term}};let z=20,count=0;
-function openApp(id){let old=document.querySelector('[data-app="'+id+'"]');if(old){old.style.display="flex";focus(old);return}let a=A[id],w=document.createElement("section");w.className="window";w.dataset.app=id;w.style.width=a.w+"px";w.style.height=a.h+"px";w.style.left=120+(count++%5)*30+"px";w.style.top=70+(count%5)*25+"px";w.style.zIndex=++z;w.innerHTML='<div class="title"><div class="traffic"><button class="x"></button><button class="m"></button><button class="g"></button></div><strong>'+a.n+'</strong></div><div class="body">'+a.v+'</div><div class="resize"></div>';windows.append(w);wire(w);if(a.o)a.o();renderDock()}
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const winRoot=$("#windows"), iconRoot=$("#icons"), appRoot=$("#apps"), dockRoot=$("#dock"), launcherEl=$("#launcher"), searchEl=$("#search"), clockEl=$("#clock"), bootEl=$("#boot");
+const A={
+about:{n:"About nexOS",i:"◈",w:480,h:320,v:'<div class="welcome"><h1>nexOS</h1><p class="muted">KDE Plasma × macOS-inspired web desktop.</p><p>Glass panels, a dock, draggable windows and real little apps.</p><p class="muted">nexOS 0.1 • browser edition</p></div>'},
+files:{n:"Files",i:"▣",w:580,h:380,v:'<div class="rows"><h2>Home</h2><div>📁 Documents <span>Folder</span></div><div>🖼 Pictures <span>Folder</span></div><div>⬇ Downloads <span>Folder</span></div></div>'},
+notes:{n:"Notes",i:"▤",w:520,h:410,v:'<textarea id="notes" placeholder="Start typing…"></textarea>',o:()=>{const n=$("#notes");n.value=localStorage.nexNotes||"";n.oninput=()=>localStorage.nexNotes=n.value}},
+settings:{n:"Settings",i:"⚙",w:500,h:350,v:'<div class="rows"><h2>Appearance</h2><div>Style <span>KDE Plasma × macOS</span></div><div>Accent <span>Blue / Violet</span></div><div>Theme <button id="theme">Toggle light mode</button></div></div>',o:()=>$("#theme").onclick=()=>document.body.classList.toggle("light")},
+calculator:{n:"Calculator",i:"⌗",w:350,h:430,v:'<div class="calc"><output id="out">0</output>'+["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+"].map(x=>'<button data-k="'+x+'">'+x+"</button>").join("")+'<button data-k="C">C</button></div>',o:initCalc},
+terminal:{n:"Terminal",i:"⌘",w:600,h:390,v:'<div class="term" id="terminal">nexOS Terminal v0.1<br><span class="muted">type help</span><br>nex@web:~$ <input id="cmd" autocomplete="off"></div>',o:initTerminal}
+};
+let z=20,count=0;
+function openApp(id){
+ const old=$('.window[data-app="'+id+'"]');
+ if(old){old.style.display="flex";focus(old);return}
+ const a=A[id]; if(!a)return;
+ const w=document.createElement("section"); w.className="window"; w.dataset.app=id;
+ w.style.width=a.w+"px";w.style.height=a.h+"px";w.style.left=120+(count++%5)*30+"px";w.style.top=70+(count%5)*25+"px";w.style.zIndex=++z;
+ w.innerHTML='<div class="title"><div class="traffic"><button class="x"></button><button class="m"></button><button class="g"></button></div><strong>'+a.n+'</strong></div><div class="body">'+a.v+'</div><div class="resize"></div>';
+ winRoot.appendChild(w);wireWindow(w);if(a.o)a.o();renderDock();
+}
 function focus(w){w.style.zIndex=++z}
-function wire(w){w.onpointerdown=()=>focus(w);w.querySelector(".x").onclick=()=>{w.remove();renderDock()};w.querySelector(".m").onclick=()=>{w.style.display="none"};w.querySelector(".g").onclick=()=>w.classList.toggle("max");let bar=w.querySelector(".title"),d;bar.onpointerdown=e=>{if(e.target.tagName==="BUTTON"||w.classList.contains("max"))return;d=[e.clientX-parseFloat(w.style.left),e.clientY-parseFloat(w.style.top)];bar.setPointerCapture(e.pointerId)};bar.onpointermove=e=>{if(d){w.style.left=Math.max(3,e.clientX-d[0])+"px";w.style.top=Math.max(45,e.clientY-d[1])+"px"}};bar.onpointerup=()=>d=null;let r=w.querySelector(".resize"),s; r.onpointerdown=e=>{s=[e.clientX,w.offsetWidth,e.clientY,w.offsetHeight];r.setPointerCapture(e.pointerId)};r.onpointermove=e=>{if(s&&!w.classList.contains("max")){w.style.width=Math.max(300,s[1]+e.clientX-s[0])+"px";w.style.height=Math.max(180,s[3]+e.clientY-s[2])+"px"}};r.onpointerup=()=>s=null}
-function renderDock(){dock.innerHTML="";Object.keys(A).forEach(id=>{if(document.querySelector('[data-app="'+id+'"]')){let b=document.createElement("button");b.textContent=A[id].i;b.title=A[id].n;b.onclick=()=>openApp(id);dock.append(b)}})}
-function populate(){Object.entries(A).forEach(([id,a])=>{let d=document.createElement("button");d.className="icon";d.innerHTML='<b>'+a.i+'</b><small>'+a.n.replace("About ","")+'</small>';d.onclick=()=>openApp(id);icons.append(d);let x=document.createElement("button");x.className="app";x.dataset.app=id;x.innerHTML='<b>'+a.i+'</b><small>'+a.n.replace("About ","")+'</small>';x.onclick=()=>{openApp(id);launcher.classList.add("hidden")};apps.append(x)})}
-launch.onclick=()=>launcher.classList.toggle("hidden");brand.onclick=()=>launcher.classList.remove("hidden");search.oninput=()=>document.querySelectorAll(".app").forEach(x=>x.classList.toggle("hidden",!x.textContent.toLowerCase().includes(search.value.toLowerCase())));document.addEventListener("keydown",e=>{if(e.key==="Escape")launcher.classList.add("hidden")});
-function clock(){clock.textContent=new Intl.DateTimeFormat([],{weekday:"short",hour:"numeric",minute:"2-digit"}).format(new Date())}setInterval(clock,1000);clock();
-function calc(){let v="0";document.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{let k=b.dataset.k;if(k==="C")v="0";else if(k==="="){try{v=String(Function("return "+v)())}catch{v="Error"}}else v=v==="0"&&!"+-*/.".includes(k)?k:v+k;out.textContent=v})}
-function term(){cmd.onkeydown=e=>{if(e.key==="Enter"){let q=cmd.value.trim(),x=document.createElement("div");x.textContent="nex@web:~$ "+q+"  "+(q==="help"?"help clear date whoami neofetch":q==="whoami"?"nex":q==="date"?new Date().toString():q==="clear"?"":"command not found");term.insertBefore(x,cmd.parentNode);cmd.value=""}}}
-populate();openApp("about");setTimeout(()=>boot.remove(),1300);
+function wireWindow(w){
+ w.onpointerdown=()=>focus(w);
+ w.querySelector(".x").onclick=()=>{w.remove();renderDock()};
+ w.querySelector(".m").onclick=()=>{w.style.display="none"};
+ w.querySelector(".g").onclick=()=>w.classList.toggle("max");
+ const bar=w.querySelector(".title");let drag=null;
+ bar.onpointerdown=e=>{if(e.target.tagName==="BUTTON"||w.classList.contains("max"))return;drag=[e.clientX-parseFloat(w.style.left),e.clientY-parseFloat(w.style.top)];bar.setPointerCapture(e.pointerId)};
+ bar.onpointermove=e=>{if(drag){w.style.left=Math.max(3,e.clientX-drag[0])+"px";w.style.top=Math.max(45,e.clientY-drag[1])+"px"}};
+ bar.onpointerup=()=>drag=null;
+ const r=w.querySelector(".resize");let size=null;
+ r.onpointerdown=e=>{size=[e.clientX,w.offsetWidth,e.clientY,w.offsetHeight];r.setPointerCapture(e.pointerId)};
+ r.onpointermove=e=>{if(size&&!w.classList.contains("max")){w.style.width=Math.max(300,size[1]+e.clientX-size[0])+"px";w.style.height=Math.max(180,size[3]+e.clientY-size[2])+"px"}};
+ r.onpointerup=()=>size=null;
+}
+function renderDock(){dockRoot.innerHTML="";Object.keys(A).forEach(id=>{if($('.window[data-app="'+id+'"]')){const b=document.createElement("button");b.textContent=A[id].i;b.title=A[id].n;b.onclick=()=>openApp(id);dockRoot.appendChild(b)}})}
+function populate(){
+ Object.entries(A).forEach(([id,a])=>{
+  const d=document.createElement("button");d.className="icon";d.innerHTML="<b>"+a.i+"</b><small>"+a.n.replace("About ","")+"</small>";d.onclick=()=>openApp(id);iconRoot.appendChild(d);
+  const x=document.createElement("button");x.className="app";x.dataset.app=id;x.innerHTML="<b>"+a.i+"</b><small>"+a.n.replace("About ","")+"</small>";x.onclick=()=>{openApp(id);launcherEl.classList.add("hidden")};appRoot.appendChild(x);
+ });
+}
+$("#launch").onclick=()=>launcherEl.classList.toggle("hidden");
+$("#brand").onclick=()=>launcherEl.classList.remove("hidden");
+searchEl.oninput=()=>$$(".app").forEach(x=>x.classList.toggle("hidden",!x.textContent.toLowerCase().includes(searchEl.value.toLowerCase())));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")launcherEl.classList.add("hidden")});
+function updateClock(){clockEl.textContent=new Intl.DateTimeFormat([],{weekday:"short",hour:"numeric",minute:"2-digit"}).format(new Date())}
+setInterval(updateClock,1000);updateClock();
+function initCalc(){
+ let v="0";$$("[data-k]").forEach(b=>b.onclick=()=>{const k=b.dataset.k;if(k==="C")v="0";else if(k==="="){try{v=String(Function("return "+v)())}catch{v="Error"}}else v=v==="0"&&!"+-*/.".includes(k)?k:v+k;$("#out").textContent=v});
+}
+function initTerminal(){
+ const input=$("#cmd"),terminal=$("#terminal");input.focus();
+ input.onkeydown=e=>{if(e.key!=="Enter")return;const q=input.value.trim(),x=document.createElement("div");x.textContent="nex@web:~$ "+q+"  "+(q==="help"?"help clear date whoami neofetch":q==="whoami"?"nex":q==="date"?new Date().toString():q==="clear"?"":"command not found");terminal.insertBefore(x,input.parentNode);input.value=""};
+}
+populate();openApp("about");setTimeout(()=>bootEl.remove(),1300);
