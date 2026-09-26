@@ -21,8 +21,8 @@ async function copyNamed(pkgDir,outDir,names){
     await cp(src,join(outDir,name));
   }
 }
-await copyNamed(join(nm,"@mercuryworkshop/scramjet"),join(root,"scram"),["scramjet.all.js","scramjet.sync.js","scramjet.wasm.wasm"]);
-await copyNamed(join(nm,"@mercuryworkshop/bare-mux"),join(root,"baremux"),["index.js","worker.js"]);
+await copyNamed(join(nm,"@mercuryworkshop/scramjet"),join(root,"scramjet"),["scramjet.js","scramjet.wasm"]);
+await copyNamed(join(nm,"@mercuryworkshop/scramjet-controller"),join(root,"controller"),["controller.api.js","controller.inject.js","controller.sw.js"]);
 await copyNamed(join(nm,"@mercuryworkshop/libcurl-transport"),join(root,"libcurl"),["index.mjs"]);
 await cp(join(root,"scripts","scramjet-sw.js"),join(root,"sw.js"));
-console.log("Scramjet assets built.");
+console.log("Scramjet 2 assets built.");
