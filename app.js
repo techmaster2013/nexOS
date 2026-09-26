@@ -108,7 +108,7 @@ function initStore(){$("[data-install]").forEach(b=>b.onclick=()=>{b.textContent
 function initGames(){let score=0;$("#clickGame").onclick=()=>{$("#clickScore").textContent=++score+" clicks"};const n=Math.floor(Math.random()*10)+1;$("#guessGame").onclick=()=>{$("#guessResult").textContent=Number($("#guessInput").value)===n?" 🎉 correct!":" nope 😭"}}
 function initPaint(){const c=$("#paintCanvas"),x=c.getContext("2d");let down=false;c.onpointerdown=e=>{down=true;x.beginPath();x.moveTo(e.offsetX,e.offsetY)};c.onpointermove=e=>{if(!down)return;x.lineTo(e.offsetX,e.offsetY);x.stroke()};c.onpointerup=()=>down=false}
 function initBrowser(){
-  const input=$("#url"),frame=$("#uvFrame"),status=$("#uvStatus");
+  const input=$("#url"),frame=$("#uvFrame"),view=$(".browserview"),status=$("#uvStatus");
   let ready=false,scramjet=null,connection=null,currentFrame=null;
   const makeUrl=()=>{
     let u=input.value.trim();if(!u)return null;
@@ -142,7 +142,8 @@ function initBrowser(){
       if(currentFrame)currentFrame.frame.remove();
       currentFrame=scramjet.createFrame();
       currentFrame.frame.id="uvFrame";
-      frame.replaceWith(currentFrame.frame);
+      frame?.remove();
+      view.appendChild(currentFrame.frame);
       currentFrame.go(u)
     }catch(e){console.error(e);status.textContent="nexite • navigation failed"}
   };
