@@ -1,0 +1,12 @@
+{
+  "name": "nexos",
+  "private": true,
+  "version": "0.2.0",
+  "description": "nexOS web desktop",
+  "scripts": {
+    "build:uv": "node scripts/build-uv.mjs"
+  },
+  "devDependencies": {
+    "@titaniumnetwork-dev/ultraviolet": "3.2.10"
+  }
+}
