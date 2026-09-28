@@ -44,6 +44,14 @@ function populate(){
 }
 $("#launch").onclick=()=>launcherEl.classList.toggle("hidden");$("#brand").onclick=()=>launcherEl.classList.remove("hidden");document.querySelectorAll("[data-app]").forEach(b=>b.onclick=()=>openApp(b.dataset.app));searchEl.oninput=()=>$$(".app").forEach(x=>x.classList.toggle("hidden",!x.textContent.toLowerCase().includes(searchEl.value.toLowerCase())));document.addEventListener("keydown",e=>{if(e.key==="Escape")launcherEl.classList.add("hidden")});
 function updateClock(){clockEl.textContent=new Intl.DateTimeFormat([],{weekday:"short",hour:"numeric",minute:"2-digit"}).format(new Date())}setInterval(updateClock,1000);updateClock();
+const quickPanel=$("#quickPanel"),shelfStatus=$("#shelfStatus"),closeQuick=$("#closeQuick"),shelfTime=$("#shelfTime");
+function updateShelfTime(){if(!shelfTime)return;shelfTime.textContent=new Intl.DateTimeFormat([],{hour:"numeric",minute:"2-digit"}).format(new Date())}
+setInterval(updateShelfTime,1000);updateShelfTime();
+shelfStatus?.addEventListener("click",()=>quickPanel?.classList.toggle("hidden"));
+closeQuick?.addEventListener("click",()=>quickPanel?.classList.add("hidden"));
+$("#quickLauncher")?.addEventListener("click",()=>{launcherEl.classList.remove("hidden");quickPanel?.classList.add("hidden")});
+$("#quickTheme")?.addEventListener("click",()=>{document.body.classList.toggle("light");localStorage.nexTheme=document.body.classList.contains("light")?"light":"dark";quickPanel?.classList.add("hidden")});
+$("#quickMotion")?.addEventListener("click",()=>{document.body.classList.toggle("reduce-motion");localStorage.nexReduce=document.body.classList.contains("reduce-motion")?"1":"0"});
 function updateLockClock(){const d=new Date();$("#lockTime").textContent=new Intl.DateTimeFormat([],{hour:"numeric",minute:"2-digit"}).format(d);$("#lockDate").textContent=new Intl.DateTimeFormat([],{weekday:"long",month:"long",day:"numeric"}).format(d)}setInterval(updateLockClock,1000);
 function initCalc(){let v="0";$$("[data-k]").forEach(b=>b.onclick=()=>{const k=b.dataset.k;if(k==="C")v="0";else if(k==="="){try{v=String(Function("return "+v)())}catch{v="Error"}}else v=v==="0"&&!"+-*/.".includes(k)?k:v+k;$("#out").textContent=v})}
 function initTerminal(){
