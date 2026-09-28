@@ -256,7 +256,6 @@ const selection=document.createElement("div");selection.id="selectionBox";deskto
     try{
       if(navigator.storage?.persist) await navigator.storage.persist();
     }catch{}
-    try{document.documentElement.style.setProperty("content-visibility","auto")}catch{}
   });
 
   const isEditable=el=>{
