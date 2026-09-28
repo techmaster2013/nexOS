@@ -1,0 +1,9 @@
+{
+  "name": "nexOS",
+  "short_name": "nexOS",
+  "start_url": "./",
+  "display": "fullscreen",
+  "background_color": "#0d0619",
+  "theme_color": "#190f26",
+  "description": "nexOS browser desktop"
+}
