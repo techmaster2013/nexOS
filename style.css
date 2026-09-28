@@ -80,3 +80,6 @@ header{animation:headerIn .45s ease both}footer{animation:shelfIn .5s .12s cubic
 @keyframes headerIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
 @keyframes shelfIn{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1;transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+footer{background:rgba(23,25,32,var(--shelf-opacity,.72));backdrop-filter:blur(var(--shelf-blur,28px));-webkit-backdrop-filter:blur(var(--shelf-blur,28px));border-radius:var(--shelf-radius,19px)}
+footer{--shelf-opacity:.72;--shelf-blur:28px;--shelf-radius:19px}
