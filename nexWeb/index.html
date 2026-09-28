@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#190f26">
+<title>nexWeb</title>
+<link rel="icon" href="../coreHZ.png" type="image/png">
+<link rel="stylesheet" href="style.css">
+<script src="../scramjet/scramjet.js"></script>
+<script src="../controller/controller.api.js"></script>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<main id="main">
+  <header class="hero">
+    <span class="hero-badge">nexOS web tools</span>
+    <h1><span class="magic-text">nexWeb</span></h1>
+    <p class="hero-subtitle">the web browser from nexite, rebuilt as a GamePlaza-style standalone web app.</p>
+    <div class="hero-actions">
+      <button id="launch" class="primary-action">Launch nexWeb</button>
+      <button id="focus" class="secondary-action" type="button">Focus address bar</button>
+    </div>
+  </header>
+
+  <section class="browser-card" aria-label="nexWeb browser">
+    <div class="browser-top">
+      <div class="traffic"><i></i><i></i><i></i></div>
+      <span id="status">ready to initialize</span>
+    </div>
+    <div class="address-row">
+      <button id="back" title="Back">‹</button>
+      <button id="forward" title="Forward">›</button>
+      <input id="url" value="https://example.com" autocomplete="url" spellcheck="false" placeholder="Search or enter address">
+      <button id="go">Go</button>
+    </div>
+    <div id="browserView" class="browser-view">
+      <div class="empty">
+        <div class="empty-icon">◎</div>
+        <h2>nexWeb</h2>
+        <p>Scramjet-powered browsing, outside the nexOS desktop.</p>
+        <button id="openExample">Open example.com</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="quick-grid">
+    <button class="quick-card" data-url="https://www.google.com"><span>⌕</span><strong>Search</strong><small>open a search page</small></button>
+    <button class="quick-card" data-url="https://github.com"><span>⌘</span><strong>GitHub</strong><small>browse repositories</small></button>
+    <button class="quick-card" data-url="https://gameplaza.example"><span>🎮</span><strong>GamePlaza</strong><small>quick-link placeholder</small></button>
+  </section>
+
+  <footer>
+    <span>nexWeb • nexOS project</span>
+    <a href="https://github.com/techmaster2013/nexOS">source on GitHub</a>
+  </footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
