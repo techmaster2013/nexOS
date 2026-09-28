@@ -247,3 +247,43 @@ $("#unlockBtn").onclick=()=>{const input=$("#unlockPass"),err=$("#unlockError");
 $("#unlockPass").onkeydown=e=>{if(e.key==="Enter")$("#unlockBtn").click()};$("#forgotBtn").onclick=async()=>{const ok=confirm("Reset nexOS? This will erase nexOS data for this site, including your account, notes, settings, and saved site data. It cannot erase your browser's global history or HTTP cache.");if(!ok)return;try{const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)));if("serviceWorker" in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()))}}catch{}localStorage.clear();sessionStorage.clear();location.reload()};
 populate();
 const selection=document.createElement("div");selection.id="selectionBox";desktop.appendChild(selection);let selecting=null;desktop.addEventListener("pointerdown",e=>{if(e.target!==desktop&&e.target!==iconRoot)return;if(e.target.classList&&e.target.classList.contains("icon"))return;selecting=[e.clientX,e.clientY];selection.style.display="block";selection.style.left=e.clientX+"px";selection.style.top=e.clientY+"px";selection.style.width="0px";selection.style.height="0px";$$(".icon").forEach(x=>x.classList.remove("selected"))});desktop.addEventListener("pointermove",e=>{if(!selecting)return;const x=Math.min(selecting[0],e.clientX),y=Math.min(selecting[1],e.clientY),w=Math.abs(e.clientX-selecting[0]),h=Math.abs(e.clientY-selecting[1]);selection.style.left=x+"px";selection.style.top=y+"px";selection.style.width=w+"px";selection.style.height=h+"px";const sr=selection.getBoundingClientRect();$$(".icon").forEach(i=>{const r=i.getBoundingClientRect();if(r.left<sr.right&&r.right>sr.left&&r.top<sr.bottom&&r.bottom>sr.top)i.classList.add("selected")})});desktop.addEventListener("pointerup",()=>{selecting=null;selection.style.display="none"});
+/* ============================================================
+   nexOS UX / performance extras
+   ============================================================ */
+(function(){
+  const idle=window.requestIdleCallback||function(fn){return setTimeout(fn,1)};
+  idle(async()=>{
+    try{
+      if(navigator.storage?.persist) await navigator.storage.persist();
+    }catch{}
+    try{document.documentElement.style.setProperty("content-visibility","auto")}catch{}
+  });
+
+  const isEditable=el=>{
+    const t=el?.tagName?.toLowerCase();
+    return t==="input"||t==="textarea"||t==="select"||el?.isContentEditable;
+  };
+
+  window.addEventListener("keydown",e=>{
+    if(isEditable(e.target)) return;
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){
+      e.preventDefault();
+      launcherEl.classList.toggle("hidden");
+      if(!launcherEl.classList.contains("hidden")){searchEl.value="";searchEl.focus()}
+      return;
+    }
+    if(e.key==="Escape"){
+      launcherEl.classList.add("hidden");
+      $("#quickPanel")?.classList.add("hidden");
+      return;
+    }
+  });
+
+  document.addEventListener("visibilitychange",()=>{
+    if(!document.hidden) updateClock();
+  });
+
+  window.addEventListener("error",e=>{
+    console.warn("[nexOS] recovered from UI error:",e.message||e.error);
+  },{passive:true});
+})();
